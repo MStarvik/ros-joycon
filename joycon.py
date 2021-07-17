@@ -1,37 +1,50 @@
 import sys
 
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QApplication, QLabel
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QApplication, QLabel, QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
 
 import rospy
+from std_srvs.srv import Trigger
 
 
 class JoyconWindow(QWidget):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwars)
+        super().__init__(*args, **kwargs)
 
         grid_layout = QGridLayout()
         self.setLayout(grid_layout)
 
-        for x in range(3):
-            for y in range(3):
-                button = JoyconButton(str(str(3*x+y)))
-                grid_layout.addWidget(button, x*2, y)
+        for x in range(2):
+            for y in range(4):
+                button = JoyconButton("service {}".format(str(4*x+y)), self)
+                button.set_service("service_{}".format(4*x+y))
+                grid_layout.addWidget(button, y, x*2)
+
+        label = QLabel(self)
+        label.setPixmap(QPixmap("icons/ascend_logo.png"))
+        grid_layout.addWidget(label, 0, 1, 4, 1)
         
-        self.setWindowTitle('Basic Grid Layout')
+        self.setWindowTitle('ROS joycon')
+        self.setWindowIcon(QIcon("icons/ascend_logo.png"))
 
 
 class JoyconButton(QPushButton):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, service=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setCheckable(True)
-        self.toggle()
+        self.service = service
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.clicked.connect(self)
 
     def __call__(self):
-        print("button pushed")
+        if self.service:
+            try:
+                rospy.ServiceProxy(self.service, Trigger)()
+            except rospy.ServiceException as e:
+                print("Service call failed: {}".format(e))
 
+    def set_service(self, service):
+        self.service = service
 
 
 if __name__ == "__main__":
