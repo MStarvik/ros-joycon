@@ -11,7 +11,15 @@ class JoyconWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # self.setStyleSheet("background-color: #11100e;")
+        self.setStyleSheet(
+            "QWidget {"
+                "background-color: #1b1916;"
+            "}"
+        )
+
         grid_layout = QGridLayout()
+        grid_layout.setSpacing(15);
         self.setLayout(grid_layout)
 
         for x in range(2):
@@ -31,6 +39,30 @@ class JoyconWindow(QWidget):
 class JoyconButton(QPushButton):
     def __init__(self, *args, service=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # self.setStyleSheet("border: red 5px solid;")
+        # self.setStyleSheet("background-color: #1b1916")
+        # self.setStyleSheet("color: #e4e4e4")
+
+        self.setStyleSheet(
+            "QPushButton {"
+                "background-color: #1b1916;"
+                # "background-color: #11100e;"
+                "color: #e4e4e4;"
+                # "color: #757575;"
+                # "color: #f09b36;"
+                "border: 3px solid #e4e4e4;"
+                # "border: 2px solid #757575;"
+                "border-radius: 8px;"
+                "font-size: 24pt;"
+            "}"
+            "QPushButton::pressed {"
+                "background-color: #e4e4e4;"
+                # "background-color: #757575;"
+                "color: #11100e;"
+            "}"
+        )
+        
 
         self.service = service
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
