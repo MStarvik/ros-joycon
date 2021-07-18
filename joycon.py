@@ -29,7 +29,9 @@ class JoyconWindow(QWidget):
                 grid_layout.addWidget(button, y, x*2)
 
         label = QLabel(self)
-        label.setPixmap(QPixmap("icons/ascend_logo.png"))
+        pixmap = QPixmap("icons/ascend_logo.png")
+        pixmap = pixmap.scaledToHeight(320)
+        label.setPixmap(pixmap)
         grid_layout.addWidget(label, 0, 1, 4, 1)
         
         self.setWindowTitle('ROS joycon')
