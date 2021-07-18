@@ -17,6 +17,7 @@ class JoyconWindow(QWidget):
                 "background-color: #1b1916;"
             "}"
         )
+        self.showFullScreen()
 
         grid_layout = QGridLayout()
         grid_layout.setSpacing(15);
